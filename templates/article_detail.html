@@ -1,0 +1,307 @@
+{% load static %}
+{% load get_file_name %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Стили для заголовка и навигации */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+
+        /* Стили для статьи */
+        #article-detail {
+            background-color: #fff;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        #article-detail .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #article-detail .cover-photo {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #article-detail .article-title {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #article-detail .article-title h2 {
+            color: #333;
+            font-size: 2em;
+            margin: 0;
+        }
+
+        #article-detail .article-content {
+            background-color: #e0e0e0;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            text-align: justify;
+        }
+
+        #article-detail .article-content p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #article-detail .gallery {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        #article-detail .gallery img {
+            height: 200px; /* Фиксированная высота (измените на нужное значение) */
+            width: auto; /* Автоматическая ширина для пропорций */
+            object-fit: cover; /* Убедитесь, что изображение заполняет контейнер */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        #article-detail .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Стили для ссылок на файлы */
+        .file-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px; /* Расстояние между ссылками */
+            margin-top: 20px; /* Расстояние между файлами и фотографиями */
+        }
+
+        .file-links a {
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .file-links a:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Иконки для файлов */
+        .file-links a::before {
+            content: '📄';
+            margin-right: 8px;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 768px) {
+            .file-links a {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Стили для Lightbox */
+        .lb-outerContainer {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .lb-image {
+            object-fit: contain;
+            max-width: 90vw; /* Максимальная ширина изображения до 90% ширины экрана */
+            max-height: 90vh; /* Максимальная высота изображения до 90% высоты экрана */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .lb-dataContainer {
+            max-width: 600px !important;
+            padding: 10px !important;
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 10px !important;
+            right: 10px !important;
+            background: url('https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/close.png') no-repeat !important;
+            background-size: 30px 30px !important;
+            width: 30px !important;
+            height: 30px !important;
+            opacity: 1 !important;
+            transition: opacity 0.3s !important;
+            z-index: 1000;
+        }
+
+        .lb-data .lb-close:hover {
+            opacity: 0.7 !important;
+        }
+
+        .lb-nav {
+            display: none !important;
+        }
+
+        .lb-container {
+            background: rgba(0, 0, 0, 0.8) !important;
+            border-radius: 10px !important;
+        }
+
+        .lb-loader {
+            display: none !important;
+        }
+
+        .lb-number {
+            display: none !important;
+        }
+
+        .lb-details {
+            text-align: center !important;
+            color: #fff !important;
+            padding: 10px !important;
+        }
+
+        .lb-caption {
+            font-size: 1.2em !important;
+            font-weight: 500 !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Порфтолио</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'main:index_page' %}">Главная</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="article-detail">
+            <div class="container">
+                <img src="{{ article.cover_photo.url }}" alt="{{ article.title }}" class="cover-photo">
+                <div class="article-title">
+                    <h2>{{ article.title }}</h2>
+                </div>
+                <div class="article-content">
+                    <p>{{ article.description }}</p>
+                </div>
+                <div class="gallery">
+                    {% for photo in article.photos.all %}
+                        <a href="{{ photo.image.url }}" data-lightbox="article-photos" data-title="{{ photo.image.name }}">
+                            <img src="{{ photo.image.url }}" alt="{{ photo.image.name }}">
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="file-links">
+                    {% for file in article.other_files.all %}
+                        <a href="{{ file.file.url }}" download>{{ file.file.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>© 2024 Все права защищены.</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
+    <script>
+        // Убедитесь, что Lightbox инициализируется после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            lightbox.option({
+                fadeDuration: 200, // Ускорение анимации появления
+                resizeDuration: 200, // Ускорение анимации изменения размера
+                maxWidth: 1200, // Максимальная ширина изображения
+                maxHeight: 900 // Максимальная высота изображения
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+{% load static %}
+{% load get_file_name %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыкальный Руководитель</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Стили для заголовка и навигации */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+
+        /* Стили для hero секции */
+        #hero {
+            background-color: #f3f4f6;
+            padding: 60px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #hero .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        #hero .hero-text {
+            max-width: 50%;
+        }
+
+        #hero h2 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        #hero p {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        #hero .hero-image {
+            max-width: 40%;
+            flex-shrink: 0;
+        }
+
+        #hero .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Стили для раздела "О себе" */
+        #about {
+            background-color: #fff;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        #about .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #about h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #about p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+            text-align: justify;
+        }
+
+        #about img {
+            width: 200px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Общие стили для разделов */
+        section {
+            padding: 60px 0;
+        }
+
+        section h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .gallery, .video-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .gallery img, .video-gallery video {
+            height: 200px; /* Фиксированная высота (измените на нужное значение) */
+            width: auto; /* Автоматическая ширина для пропорций */
+            object-fit: cover; /* Убедитесь, что изображение заполняет контейнер */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+
+        .gallery img:hover, .video-gallery video:hover {
+            transform: scale(1.05);
+        }
+        /* Стили для раздела гостевая книга */
+        #book {
+            text-align: center;
+        }
+
+        #book p {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        /* Стили для раздела Контакты */
+        #contact {
+            text-align: center;
+        }
+
+        #contact p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        /* Стили для футера */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Стили для ссылок на файлы */
+        .file-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px; /* Расстояние между ссылками */
+            margin-top: 20px; /* Расстояние между файлами и фотографиями */
+        }
+
+        .file-links a {
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .file-links a:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Иконки для файлов */
+        .file-links a::before {
+            content: '📄';
+            margin-right: 8px;
+        }
+
+        /* Адаптивные стили */
+        @media (max-width: 768px) {
+            #hero .hero-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #hero .hero-text {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            #hero .hero-image {
+                max-width: 80%;
+            }
+
+            .file-links a {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Стили для Lightbox */
+        .lb-outerContainer {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .lb-image {
+            object-fit: contain;
+            max-width: 90vw; /* Максимальная ширина изображения до 90% ширины экрана */
+            max-height: 90vh; /* Максимальная высота изображения до 90% высоты экрана */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .lb-dataContainer {
+            max-width: 600px !important;
+            padding: 10px !important;
+        }
+
+        .lb-close {
+            position: absolute;
+            top: 10px !important;
+            right: 10px !important;
+            background: url('https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/close.png') no-repeat !important;
+            background-size: 30px 30px !important;
+            width: 30px !important;
+            height: 30px !important;
+            opacity: 1 !important;
+            transition: opacity 0.3s !important;
+            z-index: 1000;
+        }
+        
+
+        .lb-data .lb-close:hover {
+            opacity: 0.7 !important;
+        }
+
+        .lb-nav {
+            display: none !important;
+        }
+
+        .lb-container {
+            background: rgba(0, 0, 0, 0.8) !important;
+            border-radius: 10px !important;
+        }
+
+        .lb-loader {
+            display: none !important;
+        }
+
+        .lb-number {
+            display: none !important;
+        }
+
+        .lb-details {
+            text-align: center !important;
+            color: #fff !important;
+            padding: 10px !important;
+        }
+
+        .lb-caption {
+            font-size: 1.2em !important;
+            font-weight: 500 !important;
+        }
+
+        /* Стили для карточек статей */
+        .article-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+    
+        .article-item {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+    
+        .article-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    
+        .article-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+    
+        .article-item .article-content {
+            padding: 20px;
+        }
+    
+        .article-item h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    
+        .article-item p {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Ограничиваем текст тремя строками */
+            -webkit-box-orient: vertical;
+        }
+    
+        .article-item .read-more {
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none; /* Убираем подчеркивание */
+            font-weight: 500;
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+    
+        .article-item .read-more:hover {
+            background-color: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Убираем подчеркивание для всех ссылок */
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Порфтолио</h1>
+            <nav>
+                <ul>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-image">
+                        <img src="{{ main_photo.image.url }}" alt="Музыкальный Руководитель">
+                    </div>
+                    <div class="hero-text">
+                        <h2>Шпаковский Виктор Эдуардович</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        {% if main_text %}
+            <section id="about">
+                <div class="container">
+                    <h2>О себе</h2>
+                    <p>
+                        {{ main_text.text | linebreaksbr}}
+                    </p>
+                </div>
+            </section>
+        {% endif %}
+        {% if certificates %}
+            <section id="awards">
+                <div class="container">
+                    <h2>Грамоты и дипломы</h2>
+                    <div class="gallery">
+                        {% for photo in certificates %}
+                            <a href="{{ photo.certificate.url }}" data-lightbox="certificates" data-title="Грамота 1">
+                                <img src="{{ photo.certificate.url }}" alt="Грамота">
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        {% if articles %}
+        <section id="articles">
+            <div class="container">
+                <h2>Мои статьи</h2>
+                <div class="article-list">
+                    {% for article in articles %}
+                        <div class="article-item">
+                            <img src="{{ article.cover_photo.url }}" alt="{{ article.title }}">
+                            <div class="article-content">
+                                <h3><a href="{% url 'main:show_article' article.slug %}">{{ article.title }}</a></h3>
+                                <p>{{ article.description|truncatewords:27 }}...</p>
+                                <a href="{% url 'main:show_article' article.slug %}" class="read-more">Читать далее</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        {% if links %}
+            <section id="about">
+                <div class="container">
+                    <h2>Полезные ссылки</h2>
+                    {% for link in  links%}
+                        <a href="{{ link }}">{{ link.link }}</a>
+                    {% endfor %}
+                    
+                </div>
+            </section>
+        {% endif %}
+        <section id="book">
+            <div class="container">
+                <div style="margin-top: 20px;">
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2>Контакты</h2>
+                <p>Email: spakovskijviktor0@gmail.com</p>
+                <p>Телефон: +7 (999) 255-8486</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>© 2024 Все права защищены.</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
+    <script>
+        // Убедитесь, что Lightbox инициализируется после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            lightbox.option({
+                fadeDuration: 200, // Ускорение анимации появления
+                resizeDuration: 200, // Ускорение анимации изменения размера
+                maxWidth: 1200, // Максимальная ширина изображения
+                maxHeight: 900 // Максимальная высота изображения
+            });
+        });
+    </script>
+    <script>
+        lightbox.option({
+            fadeDuration: 150, // Быстрая анимация (200 миллисекунд)
+            resizeDuration: 150, // Быстрая анимация изменения размера (200 миллисекунд)
+        });
+    </script>
+</body>
+</html>
